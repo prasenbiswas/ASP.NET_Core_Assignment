@@ -1,0 +1,78 @@
+﻿@model IEnumerable<CoreAssignmentForRollBased.ViewModel.ManagerViewModel>
+
+@{
+    ViewBag.Title = "Manager List";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div class="panel panel-primary">
+    <div class="panel-heading">
+        <h3 class="box-title">
+            <b>Manager List</b>
+        </h3>
+    </div>
+    <!-- /.box-header -->
+    <div class="panel-body">
+        <table class="table table-hover table-bordered table-condensed" id="ManagerList">
+            <thead>
+                <tr>
+                    <td><b>ManagerName</b></td>
+                    <td><b>ManagerEmail</b></td>
+                
+                </tr>
+            </thead>
+            <tbody>
+
+            @foreach (var user in Model)
+            {
+                <tr>
+                    <td>@user.ManagerName</td>
+                    <td>@user.ManagerEmail</td>
+                
+                    <td>
+                    <a asp-action="DeleteUser" asp-controller="RoleBased" asp-route-id="@user.ManagerId" class="btn btn-danger">Delete</a>
+                    </td>
+
+                </tr>
+            }
+            </tbody>
+        </table>
+    </div>
+
+    <div class="panel-footer">
+        <p class="box-title"><b>Total Users till @String.Format("{0 : dddd, MMMM d, yyyy}", DateTime.Now)  : </b><span class="label label-primary">@Model.Count()</span></p>
+    </div>
+</div>
+
+
+@section scripts{
+    <script>
+        $(function () {
+            $('#ManagerList').DataTable({
+                "paging": true,
+                "lengthChange": true,
+                "searching": true,
+                "ordering": true,
+                "info": true,
+                "autoWidth": true
+            });
+        });
+    </script>
+}
+
+@*Delete Modal*@
+@*
+    <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLabel">Are You Sure Want to Delete</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                    <button type="button" class="btn btn-danger">Delete</button>
+                </div>
+            </div>
+        </div>
+    </div>*@

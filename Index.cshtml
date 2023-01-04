@@ -1,0 +1,40 @@
+﻿@model IEnumerable<CoreAssignmentForRollBased.Models.Profile>
+
+@{
+	ViewData["Title"] = "Index";
+}
+
+<h1>Profile</h1>
+<div class="d-flex justify-content-end">
+	<p>
+		<a asp-action="Create" id="AddProfileBtn" class="btn btn-primary">Add Profile</a>
+	</p>
+</div>
+
+@foreach (var item in Model)
+{
+	@if (User.Claims.First().Value == Convert.ToString(@item.ApplicatioUserId))
+	{
+		<div class=" d-flex justify-content-center align-items-center">
+
+			<div class="card d-flex justify-content-center align-items-center" style="width: 25rem;">
+				<img src="~/Images/@item.ProfilePhoto" class="rounded-circle" alt="..." width="80px" height="80px">
+				<div class="card-body">
+					<h4 class="card-title"> <span style="font-weight:bold;">Name:</span> @Html.DisplayFor(modelItem => item.FirstName) @Html.DisplayFor(modelItem => item.LastName)</h4>
+					<p class="card-text"><span style="font-weight:bold;">Mobile:</span>@Html.DisplayFor(modelItem => item.MobileNumber)</p>
+					<p class="card-text"><span style="font-weight:bold;">Address:</span>@Html.DisplayFor(modelItem => item.Address)</p>
+					<a asp-action="EditEmployee" asp-route-id="@item.ProfileId" class="btn btn-success">Edit</a> &nbsp;
+					@if (User.IsInRole("Admin") || User.IsInRole("Manager"))
+					{
+						<a asp-action="DeletePro" asp-route-id="@item.ProfileId" class="btn btn-danger">Delete</a>
+					}
+				</div>
+			</div>
+		</div>
+	}
+}
+@*<script>
+	$("#AddProfileBtn").click(function () {
+	$(this).hide();
+});
+</script>*@

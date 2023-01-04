@@ -1,0 +1,213 @@
+﻿@using CoreAssignmentForRollBased.Data
+@using Microsoft.AspNetCore.Identity
+@inject SignInManager<ApplicationUser> signInManager
+
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="utf-8" />
+	<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+	<title>@ViewData["Title"] - Aspirefox</title>
+	<link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
+	<link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
+	<link rel="stylesheet" href="~/css/AdminStyle.css" asp-append-version="true" />
+
+	<link href="//maxcdn.bootstrapcdn.com/bootstrap/3.3.0/css/bootstrap.min.css" rel="stylesheet" id="bootstrap-css">
+	<script src="//maxcdn.bootstrapcdn.com/bootstrap/3.3.0/js/bootstrap.min.js"></script>
+	<script src="//code.jquery.com/jquery-1.11.1.min.js"></script>
+	<script src='https://kit.fontawesome.com/a076d05399.js' crossorigin='anonymous'></script>
+	<link href="//netdna.bootstrapcdn.com/font-awesome/3.2.1/css/font-awesome.css" rel="stylesheet">
+</head>
+<body>
+	<header>
+		<nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-light bg-white border-bottom box-shadow mb-3">
+			<div class="container-fluid">
+				<a class="navbar-brand" asp-area="" asp-controller="Home" asp-action="Index">Aspirefox</a>
+				<button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target=".navbar-collapse" aria-controls="navbarSupportedContent"
+						aria-expanded="false" aria-label="Toggle navigation">
+					<span class="navbar-toggler-icon"></span>
+				</button>
+				<div class="navbar-collapse d-sm-inline-flex justify-content-between">
+					<ul class="navbar-nav">
+						<li class="nav-item">
+							<a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Index">Home</a>
+						</li>
+					</ul>
+					@if (signInManager.IsSignedIn(User))
+					{
+						<ul class="navbar-nav flex-grow-1">
+							<li class="nav-item">
+							</li>
+						</ul>
+						<ul class="navbar-nav me-2">
+							<li class="nav-item">
+								<p>@User.Identity.Name</p>
+							</li>
+						</ul>
+
+						@if (User.IsInRole("Admin"))
+						{
+							<ul class="navbar-nav me-2">
+								<li class="nav-item">
+									<a class="btn btn-success" asp-area="" asp-controller="RoleBased" asp-action="CreateRole">AddRole</a>
+								</li>
+							</ul>
+						}
+						<ul class="navbar-nav justify-content-end">
+							<li class="nav-item">
+								<a class="btn btn-primary" asp-controller="RoleBased" asp-action="Logout">Logout</a>
+							</li>
+						</ul>
+					}
+					else
+					{
+						<ul class="navbar-nav justify-content-end flex-grow-1">
+							<li class="nav-item">
+								<a class="nav-link text-dark" asp-controller="RoleBased" asp-action="Login">LogIn</a>
+							</li>
+							<li class="nav-item">
+								<a class="nav-link text-dark" asp-controller="RoleBased" asp-action="Register">Register</a>
+							</li>
+						</ul>
+					}
+				</div>
+			</div>
+		</nav>
+	</header>
+	<div class="container">
+		<main role="main" class="pb-3">
+
+			@if (User.IsInRole("Admin"))
+			{
+				<div class="container">
+					<div class="row">
+
+						<div id="wrapper" style="background-color:none;">
+							<!-- Sidebar -->
+							<div id="sidebar-wrapper">
+								<ul class="sidebar-nav" style="margin-left:0;">
+									<li class="sidebar-brand">
+										<a class="nav-link text-dark" id="menu-toggle" style="margin-top:20px;float:right;">
+											<i class="fa fa-bars " style="font-size:20px !Important;" aria-hidden="true" aria-hidden="true"></i>
+										</a>
+									</li>
+									<li>
+										<a asp-area="" asp-controller="Profile" asp-action="Index"><i class="fas fa-user-alt " aria-hidden="true"> </i> <span style="margin-left:10px;">Profile</span>  </a>
+									</li>
+									<li>
+										<a asp-area="" asp-controller="RoleBased" asp-action="ManagerList"> <i class="fas fa-user-tie " aria-hidden="true"> </i> <span style="margin-left:10px;"> Manager List</span> </a>
+									</li>
+									<li>
+										<a asp-area="" asp-controller="RoleBased" asp-action="UserList"> <i class="fas fa-users" aria-hidden="true"> </i> <span style="margin-left:10px;"> User List</span> </a>
+									</li>
+								</ul>
+							</div>
+							<!-- Page Content -->
+							<div class="text-center">
+								<h1 class="display-4">Welcome to Aspirefox</h1>
+								<p>Admin</p>
+								<hr>
+								@RenderBody()
+							</div>
+						</div>
+					</div>
+				</div>
+			}
+
+			@*---------------------- Show For Only Manager ------------*@
+			@if (User.IsInRole("Manager"))
+			{
+				<div class="container">
+					<div class="row">
+						<div id="wrapper" style="background-color:none;">
+							<!-- Sidebar -->
+							<div id="sidebar-wrapper">
+								<ul class="sidebar-nav" style="margin-left:0;">
+									<li class="sidebar-brand">
+
+										<a class="nav-link text-dark" id="menu-toggle" style="margin-top:20px;float:right;">
+											<i class="fa fa-bars " style="font-size:20px !Important;" aria-hidden="true" aria-hidden="true"></i>
+										</a>
+									</li>
+									<li>
+										<a asp-area="" asp-controller="Profile" asp-action="Index"><i class="fas fa-user-alt " aria-hidden="true"> </i> <span style="margin-left:10px;">Profile</span>  </a>
+									</li>
+									<li>
+										<a asp-area="" asp-controller="RoleBased" asp-action="UserList"> <i class="fas fa-users" aria-hidden="true"> </i> <span style="margin-left:10px;"> User List</span> </a>
+									</li>
+								</ul>
+							</div>
+							<!-- Page Content -->
+							<div class="text-center">
+								<h1 class="display-4">Welcome to Aspirefox</h1>
+								<p>Manager</p>
+								<hr>
+								@RenderBody()
+							</div>
+						</div>
+					</div>
+				</div>
+			}
+
+			@if (signInManager.IsSignedIn(User))
+			{
+				if (!User.IsInRole("Admin") && !User.IsInRole("Manager"))
+				{
+					<div class="container">
+						<div class="row">
+							<div id="wrapper" style="background-color:none;">
+								<!-- Sidebar -->
+								<div id="sidebar-wrapper">
+									<ul class="sidebar-nav" style="margin-left:0;">
+										<li class="sidebar-brand">
+
+											<a href="#menu-toggle" id="menu-toggle" style="margin-top:20px;float:right;">
+												<i class="fa fa-bars " style="font-size:20px !Important;" aria-hidden="true" aria-hidden="true"></i>
+											</a>
+										</li>
+										<li>
+											<a asp-area="" asp-controller="Profile" asp-action="Index"><i class="fas fa-user-alt " aria-hidden="true"> </i> <span style="margin-left:10px;">Profile</span>  </a>
+										</li>
+									</ul>
+								</div>
+								<!-- Page Content -->
+								<div class="text-center">
+									<h1 class="display-4">Welcome to Aspirefox</h1>
+									<p>User</p>
+									<hr>
+									@RenderBody()
+								</div>
+							</div>
+						</div>
+					</div>
+				}
+			}
+			else
+			{
+				@RenderBody()
+			}
+			<script>
+				$("#menu-toggle").click(function (e) {
+					e.preventDefault();
+					$("#wrapper").toggleClass("toggled");
+				});
+			</script>
+		</main>
+	</div>
+
+	<script src="~/lib/jquery/dist/jquery.min.js"></script>
+	<script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+	<script src="~/js/site.js" asp-append-version="true"></script>
+
+
+
+
+	<script src="https://ajax.aspnetcdn.com/ajax/jquery/jquery-2.2.0.min.js"></script>
+	<script src="https://ajax.aspnetcdn.com/ajax/jquery.validate/1.16.0/jquery.validate.min.js"></script>
+	<script src="https://ajax.aspnetcdn.com/ajax/jquery.validation.unobtrusive/3.2.6/jquery.validate.unobtrusive.min.js"></script>
+
+
+	@await RenderSectionAsync("Scripts", required: false)
+</body>
+</html>
